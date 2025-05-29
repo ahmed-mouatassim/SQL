@@ -37,6 +37,17 @@ SELECT email , age FROM users ORDER BY age ASC;
 
 ✔️ هاد الكود كايجيب ليك معلومات فالجدول (email , age) وكيرتبهم تنازليا (من الاكبر الى الاصغر) حسب age
 ```sql
-SELECT email , age FROM users ORDER BY age ASC;
+SELECT email , age FROM users ORDER BY age DESC;
+```
+
+✔️ هاد الكود كيعطيك اول 2 معلومات لي كاينين في الجدول من الاكبر الى الاصغر حسب age
+```sql
+SELECT * FROM `users` ORDER BY age DESC LIMIT 2;
+```
+
+
+✔️ هاد الكود كيعطيك اول 3 معلومات لي كاينين في الجدول من الاصغر الى الاكبر حسب email
+```sql
+SELECT * FROM `users` ORDER BY email ASC LIMIT 3;
 ```
 
