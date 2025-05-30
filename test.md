@@ -1,102 +1,94 @@
-بالتأكيد، إليك ملخص للفيديو بتنسيق Markdown باللغة العربية:
+Okay, here's a markdown summary of the video content about the SQL LIKE operator.
 
-ملخص فيديو: الدوال التجميعية في SQL (Min, Max, Count, Avg, Sum)
+# SQL LIKE Operator - Video Summary
 
-يشرح هذا الفيديو كيفية استخدام الدوال التجميعية (Aggregate Functions) الأساسية في لغة SQL لاستخلاص معلومات ملخصة من البيانات الموجودة في جدول users باستخدام phpMyAdmin. الجدول يحتوي على أعمدة مثل id, email, name, age, و country.
+This video explains how to use the `LIKE` operator in SQL for pattern matching in string data, primarily demonstrated using phpMyAdmin with a `users` table that has a `name` column.
 
-1. دالة MAX() (القيمة القصوى)
+## Introduction to LIKE
 
-الغرض: تُستخدم لإيجاد أكبر قيمة في عمود معين.
+*   The `LIKE` operator is used in a `WHERE` clause to search for a specified pattern in a column.
+*   It's essential for searching text-based data.
 
-مثال: لإيجاد أكبر عمر للمستخدمين:
+## Wildcard Characters
 
-SELECT MAX(age) FROM users;
+Two main wildcard characters are used with `LIKE`:
 
+1.  **`%` (Percent Sign):** Represents zero, one, or multiple characters.
+2.  **`_` (Underscore):** Represents a single character.
 
-في الفيديو، كانت النتيجة 43.
+## Examples Demonstrated
 
-يمكن استخدامها أيضًا مع أعمدة أخرى مثل id لإيجاد أكبر id.
+The presenter uses a `users` table with columns like `id`, `email`, `name`, `age`, `country`. The focus is on the `name` column.
 
-2. دالة MIN() (القيمة الدنيا)
+1.  **Find names starting with a specific letter/string:**
+    *   Names starting with 'W':
+        ```sql
+        SELECT * FROM users WHERE name LIKE 'W%';
+        ```
+        *   This would return users like 'Wael', 'Waleed'.
+    *   Names starting with 'WA':
+        ```sql
+        SELECT * FROM users WHERE name LIKE 'WA%';
+        ```
+        *   This would also return 'Wael', 'Waleed'.
+    *   Names starting with 'WAE':
+        ```sql
+        SELECT * FROM users WHERE name LIKE 'WAE%';
+        ```
+        *   This would return 'Wael'.
 
-الغرض: تُستخدم لإيجاد أصغر قيمة في عمود معين.
+2.  **Find names ending with a specific letter/string:**
+    *   Names ending with 'L':
+        ```sql
+        SELECT * FROM users WHERE name LIKE '%L';
+        ```
+        *   This would return users like 'Wael', 'Basel'.
 
-مثال: لإيجاد أصغر عمر للمستخدمين:
+3.  **Find names containing a specific letter/string anywhere:**
+    *   Names containing 'E':
+        ```sql
+        SELECT * FROM users WHERE name LIKE '%E%';
+        ```
+        *   This would return users like 'Wael', 'Basel', 'Thaer', 'Waleed'.
 
-SELECT MIN(age) FROM users;
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-SQL
-IGNORE_WHEN_COPYING_END
+4.  **Find names where a specific letter is in a certain position (using `_`):**
+    *   Names where the second letter is 'A':
+        ```sql
+        SELECT * FROM users WHERE name LIKE '_A%';
+        ```
+        *   This would return users like 'Wael', 'Basel', 'Waleed'. (The first `_` matches the first character, 'A' matches the second, and `%` matches the rest).
 
-في الفيديو، كانت النتيجة 20.
+5.  **Find names starting with a specific letter and having a minimum length (using `_`):**
+    *   Names starting with 'W' and having at least two characters:
+        ```sql
+        SELECT * FROM users WHERE name LIKE 'W_%';
+        ```
+        *   This would return 'Wael', 'Waleed', 'wa'. (The presenter adds a user 'wa').
+    *   Names starting with 'W' and having at least three characters:
+        ```sql
+        SELECT * FROM users WHERE name LIKE 'W__%';
+        ```
+        *   This would return 'Wael', 'Waleed'. It would not return 'wa' because 'wa' only has two characters.
 
-3. دالة AVG() (المتوسط الحسابي)
+6.  **Find names starting with one letter/string and ending with another:**
+    *   Names starting with 'W' and ending with 'L':
+        ```sql
+        SELECT * FROM users WHERE name LIKE 'W%L';
+        ```
+        *   This would return 'Wael'.
+    *   Names starting with 'T' and ending with 'R':
+        ```sql
+        SELECT * FROM users WHERE name LIKE 'T%R';
+        ```
+        *   This would return 'Thaer'.
 
-الغرض: تُستخدم لحساب المتوسط الحسابي للقيم في عمود رقمي.
+## Key Takeaways
 
-مثال: لحساب متوسط أعمار المستخدمين:
+*   `LIKE` is powerful for flexible text searches.
+*   `%` is for any sequence of characters (including none).
+*   `_` is for exactly one character.
+*   These wildcards can be combined in various ways to create complex search patterns.
+*   The video also mentions W3Schools as a good resource for learning more about SQL operators.
 
-SELECT AVG(age) FROM users;
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-SQL
-IGNORE_WHEN_COPYING_END
-
-يقوم بجمع كل الأعمار ثم يقسمها على عددها. في الفيديو، كانت النتيجة 32.0000.
-
-4. دالة COUNT() (عدد الصفوف/القيم)
-
-الغرض: تُستخدم لحساب عدد الصفوف التي تطابق شرطًا معينًا، أو عدد القيم غير الفارغة في عمود.
-
-مثال: لحساب عدد المستخدمين الإجمالي:
-
-SELECT COUNT(id) FROM users; -- أو COUNT(name) أو COUNT(*)
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-SQL
-IGNORE_WHEN_COPYING_END
-
-في الفيديو، كانت النتيجة 5.
-
-COUNT(DISTINCT ...): لحساب عدد القيم الفريدة (بدون تكرار) في عمود.
-
-مثال: لحساب عدد الدول الفريدة التي ينتمي إليها المستخدمون (لتجنب عد نفس الدولة عدة مرات إذا كانت مكررة):
-
-SELECT COUNT(DISTINCT country) FROM users;
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-SQL
-IGNORE_WHEN_COPYING_END
-
-في الفيديو، كانت النتيجة الأولية 4 ثم بعد تعديل البيانات لتكرار بلد آخر أصبحت 3.
-
-5. دالة SUM() (المجموع)
-
-الغرض: تُستخدم لحساب مجموع القيم في عمود رقمي.
-
-مثال: لحساب مجموع أعمار كل المستخدمين:
-
-SELECT SUM(age) FROM users;
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-SQL
-IGNORE_WHEN_COPYING_END
-
-في الفيديو، كانت النتيجة 160.
-
-يذكر مقدم الفيديو مثالاً عمليًا مثل جمع أسعار المنتجات في سلة التسوق.
-
-خلاصة:
-
-يوفر الفيديو شرحًا عمليًا لهذه الدوال الخمس الأساسية مع أمثلة توضيحية مباشرة من خلال واجهة phpMyAdmin، مما يسهل فهم كيفية استخدامها لاستخراج إحصائيات مفيدة من قواعد البيانات.
+## Call to Action (from the video)
+The presenter encourages viewers to like the video and subscribe to the channel for more content.
