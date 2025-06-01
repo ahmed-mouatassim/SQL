@@ -1,94 +1,104 @@
-Okay, here's a markdown summary of the video content about the SQL LIKE operator.
+بالتأكيد، إليك ملخص للفيديو باللغة العربية على شكل Markdown:
 
-# SQL LIKE Operator - Video Summary
+ملخص فيديو: شرح GROUP BY و HAVING في SQL
 
-This video explains how to use the `LIKE` operator in SQL for pattern matching in string data, primarily demonstrated using phpMyAdmin with a `users` table that has a `name` column.
+يوضح هذا الفيديو كيفية استخدام جملتي GROUP BY و HAVING في لغة SQL لمعالجة البيانات وتلخيصها في قاعدة بيانات MySQL باستخدام phpMyAdmin.
 
-## Introduction to LIKE
+1. إعداد قاعدة البيانات والجدول:
 
-*   The `LIKE` operator is used in a `WHERE` clause to search for a specified pattern in a column.
-*   It's essential for searching text-based data.
+تم إنشاء جدول باسم student يحتوي على الأعمدة التالية:
 
-## Wildcard Characters
+id: (INT, المفتاح الأساسي، ترقيم تلقائي) - معرّف الطالب.
 
-Two main wildcard characters are used with `LIKE`:
+name: (VARCHAR) - اسم الطالب.
 
-1.  **`%` (Percent Sign):** Represents zero, one, or multiple characters.
-2.  **`_` (Underscore):** Represents a single character.
+semester: (INT) - رقم الفصل الدراسي.
 
-## Examples Demonstrated
+mark: (INT) - علامة الطالب في ذلك الفصل.
 
-The presenter uses a `users` table with columns like `id`, `email`, `name`, `age`, `country`. The focus is on the `name` column.
+تم إدخال بيانات لعدة طلاب (محمد، باسل، وائل) مع علاماتهم في فصلين دراسيين مختلفين لكل طالب. على سبيل المثال:
 
-1.  **Find names starting with a specific letter/string:**
-    *   Names starting with 'W':
-        ```sql
-        SELECT * FROM users WHERE name LIKE 'W%';
-        ```
-        *   This would return users like 'Wael', 'Waleed'.
-    *   Names starting with 'WA':
-        ```sql
-        SELECT * FROM users WHERE name LIKE 'WA%';
-        ```
-        *   This would also return 'Wael', 'Waleed'.
-    *   Names starting with 'WAE':
-        ```sql
-        SELECT * FROM users WHERE name LIKE 'WAE%';
-        ```
-        *   This would return 'Wael'.
+محمد: فصل 1 (علامة 20)، فصل 2 (علامة 30).
 
-2.  **Find names ending with a specific letter/string:**
-    *   Names ending with 'L':
-        ```sql
-        SELECT * FROM users WHERE name LIKE '%L';
-        ```
-        *   This would return users like 'Wael', 'Basel'.
+باسل: فصل 1 (علامة 10)، فصل 2 (علامة 50).
 
-3.  **Find names containing a specific letter/string anywhere:**
-    *   Names containing 'E':
-        ```sql
-        SELECT * FROM users WHERE name LIKE '%E%';
-        ```
-        *   This would return users like 'Wael', 'Basel', 'Thaer', 'Waleed'.
+وائل: فصل 1 (علامة 40)، فصل 2 (علامة 50).
 
-4.  **Find names where a specific letter is in a certain position (using `_`):**
-    *   Names where the second letter is 'A':
-        ```sql
-        SELECT * FROM users WHERE name LIKE '_A%';
-        ```
-        *   This would return users like 'Wael', 'Basel', 'Waleed'. (The first `_` matches the first character, 'A' matches the second, and `%` matches the rest).
+2. المشكلة الأولى: حساب مجموع علامات كل طالب:
 
-5.  **Find names starting with a specific letter and having a minimum length (using `_`):**
-    *   Names starting with 'W' and having at least two characters:
-        ```sql
-        SELECT * FROM users WHERE name LIKE 'W_%';
-        ```
-        *   This would return 'Wael', 'Waleed', 'wa'. (The presenter adds a user 'wa').
-    *   Names starting with 'W' and having at least three characters:
-        ```sql
-        SELECT * FROM users WHERE name LIKE 'W__%';
-        ```
-        *   This would return 'Wael', 'Waleed'. It would not return 'wa' because 'wa' only has two characters.
+الهدف: عرض اسم كل طالب ومجموع علاماته الكلية (علامات الفصل الأول + الفصل الثاني).
 
-6.  **Find names starting with one letter/string and ending with another:**
-    *   Names starting with 'W' and ending with 'L':
-        ```sql
-        SELECT * FROM users WHERE name LIKE 'W%L';
-        ```
-        *   This would return 'Wael'.
-    *   Names starting with 'T' and ending with 'R':
-        ```sql
-        SELECT * FROM users WHERE name LIKE 'T%R';
-        ```
-        *   This would return 'Thaer'.
+محاولة أولية (غير صحيحة بدون GROUP BY):
 
-## Key Takeaways
+SELECT name, SUM(mark) AS summary FROM student;
 
-*   `LIKE` is powerful for flexible text searches.
-*   `%` is for any sequence of characters (including none).
-*   `_` is for exactly one character.
-*   These wildcards can be combined in various ways to create complex search patterns.
-*   The video also mentions W3Schools as a good resource for learning more about SQL operators.
 
-## Call to Action (from the video)
-The presenter encourages viewers to like the video and subscribe to the channel for more content.
+هذه الاستعلام يعرض اسم طالب واحد فقط (محمد، أول سجل) ومجموع علامات جميع الطلاب (200)، وهذا ليس المطلوب.
+
+الحل الصحيح باستخدام GROUP BY:
+لتجميع النتائج حسب اسم الطالب وحساب المجموع لكل طالب على حدة:
+
+SELECT name, SUM(mark) AS summary FROM student GROUP BY name;
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+SQL
+IGNORE_WHEN_COPYING_END
+
+النتيجة:
+
+باسل: 60
+
+محمد: 50
+
+وائل: 90
+
+هذا يعرض بشكل صحيح مجموع علامات كل طالب.
+
+3. المشكلة الثانية: تصفية النتائج المجمعة (الطلاب الذين مجموعهم أكبر من 50):
+
+الهدف: عرض أسماء الطلاب ومجموع علاماتهم فقط للطلاب الذين يزيد مجموع علاماتهم الكلي عن 50.
+
+محاولة خاطئة باستخدام WHERE مع الدوال التجميعية:
+لا يمكن استخدام WHERE لتطبيق شروط على نتائج الدوال التجميعية (مثل SUM()). الكود التالي سيعطي خطأ:
+
+-- هذا الكود سيعطي خطأ
+SELECT name, SUM(mark) AS summary FROM student WHERE summary > 50 GROUP BY name;
+-- أو
+SELECT name, SUM(mark) AS summary FROM student WHERE SUM(mark) > 50 GROUP BY name;
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+SQL
+IGNORE_WHEN_COPYING_END
+
+الخطأ: Unknown column 'summary' in 'where clause' أو خطأ مشابه يتعلق بعدم القدرة على استخدام SUM() في WHERE.
+
+الحل الصحيح باستخدام HAVING:
+تُستخدم HAVING لتطبيق شروط على المجموعات بعد أن يتم تجميعها بواسطة GROUP BY.
+
+SELECT name, SUM(mark) AS summary FROM student GROUP BY name HAVING summary > 50;
+-- أو باستخدام الدالة التجميعية مباشرة في HAVING
+SELECT name, SUM(mark) AS summary FROM student GROUP BY name HAVING SUM(mark) > 50;
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+SQL
+IGNORE_WHEN_COPYING_END
+
+النتيجة:
+
+باسل: 60
+
+وائل: 90
+
+هذا يعرض بشكل صحيح فقط الطلاب الذين مجموع علاماتهم الكلية أكبر من 50.
+
+الخلاصة:
+
+GROUP BY تُستخدم لتجميع الصفوف التي لها قيم متطابقة في أعمدة محددة، مما يسمح بتطبيق الدوال التجميعية (مثل SUM(), COUNT(), AVG()) على كل مجموعة.
+
+HAVING تُستخدم لتصفية النتائج بعد عملية التجميع بواسطة GROUP BY، حيث يمكن تطبيق شروط على نتائج الدوال التجميعية. لا يمكن استخدام WHERE لهذا الغرض.
