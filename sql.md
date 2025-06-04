@@ -229,3 +229,46 @@ SELECT name , sum(mark) as summark FROM student GROUP BY name HAVING summark >= 
 
 تُستخدم HAVING لتطبيق شروط على المجموعات بعد أن يتم تجميعها بواسطة GROUP BY.
 
+✔️ هاد الاكواد كتقول ليك جيب ليا كل المنتجات واسم الفئة اللي فيهم
+```sql
+SELECT items.*, categories.c_name FROM categories, items WHERE categories.c_id = items.I_categories
+```
+
+```sql
+SELECT items.*, categories.c_name FROM items
+INNER JOIN categories ON items.I_categories = categories.c_id
+```
+✔️ هاد الكود كيقول ليك جيب ليا اسماء الفئات **(categories)** اللي فيها منتجات بسعر اكبر من 700
+```sql
+SELECT categories.c_name FROM categories 
+WHERE EXISTS(SELECT items.* FROM items WHERE categories.c_id = items.I_categories AND items.I_price < 700)
+```
+✔️ هاد الكود كيقول ليك جيب ليا اسماء المنتجات (items) اللي فيهم 2 طلبات
+```sql
+SELECT items.I_name FROM items 
+WHERE items.I_id = any (SELECT ordersdetails_items FROM ordersdetails WHERE ordersdetails_quantity = 2)
+```
+✔️ هاد الكود كيقول ليك جيب ليا اسماء المنتجات (items) واسماء الفئات (categories)
+```sql
+SELECT items.I_name FROM items 
+UNION
+SELECT categories.c_name FROM categories
+```
+### ملاحظات⚠️:
+تستخدم UNION لدمج نتائج عدة استعلامات SQL في نتائج واحدة، ولكنها تزيل الصفوف المكررة تلقائيًا.
+
+✔️ هاد الكود كيقول ليك جيب ليا اسماء المنتجات (items) واسماء الفئات (categories)
+```sql
+SELECT items.I_name FROM items 
+UNION ALL
+SELECT categories.c_name FROM categories
+```
+### ملاحظات⚠️:
+تستخدم UNION ALL لدمج نتائج عدة استعلامات SQL في نتائج واحدة، ولكنها لا تزيل الصفوف المكررة تلقائيًا.
+
+
+✔️ هاد الكود كيقول ليك جيب ليا اسماء المنتجات (items) وسعرهم, ولكن الا كان السعر NULL عطيع قيمة 0
+```sql
+SELECT items.I_name , IFNULL(items.I_price , 0) FROM items
+```
+
