@@ -267,8 +267,88 @@ SELECT categories.c_name FROM categories
 تستخدم UNION ALL لدمج نتائج عدة استعلامات SQL في نتائج واحدة، ولكنها لا تزيل الصفوف المكررة تلقائيًا.
 
 
-✔️ هاد الكود كيقول ليك جيب ليا اسماء المنتجات (items) وسعرهم, ولكن الا كان السعر NULL عطيع قيمة 0
+✔️ هاد الاكواد كيقول ليك جيب ليا اسماء المنتجات (items) وسعرهم, ولكن الا كان السعر NULL عطيع قيمة 0
 ```sql
 SELECT items.I_name , IFNULL(items.I_price , 0) FROM items
 ```
 
+```sql
+SELECT items.I_name , COALESCE(items.I_price , 0) FROM items
+```
+
+✔️ هاد الكود كيقول ليك انشئ database سميتها test
+```sql
+CREATE DATABASE test
+```
+✔️ هاد الكود كيقول ليك حذف database اسمها test
+```sql
+DROP DATABASE test
+```
+
+✔️ هاد الكود كيقول ليك انشئ جدول اسمه items
+
+محتوى الجدول يتم وضعه داخل الاقواس
+```sql
+CREATE TABLE items(
+    i_id int(11) NOT NULL AUTO_INCREMENT ,
+    i_name varchar(200) NOT NULL ,
+    i_price float ,
+    i_category int(11) ,
+    PRIMARY KEY (i_id) ,
+    FOREIGN key (i_category) REFERENCES categories(c_id) 
+
+) ;
+```
+
+✔️ هاد الكود كيقول ليك حذف column اسمها c_set من الجدول datatype
+```sql
+ALTER TABLE datatype DROP c_set
+```
+
+✔️ هاد الكود كيقول ليك تعديل column اسمها c_enum من الجدول datatype والنوع ديالو varchar
+
+```sql
+ALTER TABLE datatype MODIFY c_enum varchar(200)
+```
+
+✔️ هاد الكود كيقول ليك اضافة column اسمها c_price من الجدول datatype والنوع ديالو هو double
+```sql
+ALTER TABLE datatype ADD c_price double
+```
+
+✔️ هاد الكود كيقول ليك اضافة unique constraint على column اسمها c_price من الجدول datatype
+```sql
+ALTER TABLE datatype ADD UNIQUE(c_price)
+```
+
+### ملاحظة⚠️:
+
+الunique constraint تعني ان القيمة ديال column دياله لا يمكن ان تكرر
+
+
+
+✔️ هاد الكود كيقول ليك اضافة unique constraint على column اسمها c_price من الجدول datatype
+```sql
+ALTER TABLE datatype DROP INDEX c_price
+```
+### ملاحظة⚠️:
+
+الindex تعني ان القيمة ديال column دياله يمكن ان تكرر
+
+
+✔️ هاد الكود كيقول ليك صايب view اسمها itemsmobile وتحتوي على كل المنتجات اللي فيهم i_category = 2
+```sql
+CREATE VIEW itemsmobile
+AS
+SELECT items.* FROM items WHERE i_category = 2
+```
+
+
+✔️ هاد الكود كيقول ليك حذف view اسمها itemsmobile
+```sql
+DROP VIEW itemsmobile 
+```
+
+
+
+![C:\Users\hp\OneDrive\Documents\GitHub\todo_list\SQL\the_end.jpg](the_end.jpg)
